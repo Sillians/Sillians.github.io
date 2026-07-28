@@ -30,7 +30,7 @@ export default function Home() {
             </Link>
             <a
               className="button secondary"
-              href="https://github.com/basillians"
+              href="https://github.com/Sillians"
               target="_blank"
               rel="noreferrer"
             >
@@ -103,7 +103,7 @@ export default function Home() {
         <div className="shell footer-inner">
           <div><span className="mark">B/</span><p>Building AI systems that survive contact with production.</p></div>
           <div className="footer-links">
-            <a href="https://github.com/basillians">GitHub ↗</a>
+            <a href="https://github.com/Sillians">GitHub ↗</a>
             <a href="mailto:hello@basillians.github.io">Email ↗</a>
           </div>
           <span>© {new Date().getFullYear()} Basillians</span>
