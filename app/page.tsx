@@ -101,12 +101,15 @@ export default function Home() {
       </main>
       <footer>
         <div className="shell footer-inner">
-          <div><span className="mark">B/</span><p>Building AI systems that survive contact with production.</p></div>
+          <div className="footer-signature">
+            <strong>Basil Ihuoma</strong>
+            <p>Building AI systems that survive contact with production.</p>
+          </div>
           <div className="footer-links">
             <a href="https://github.com/Sillians">GitHub ↗</a>
             <a href="mailto:hello@basillians.github.io">Email ↗</a>
           </div>
-          <span>© {new Date().getFullYear()} Basillians</span>
+          <span>© {new Date().getFullYear()} Basil Ihuoma</span>
         </div>
       </footer>
     </>
