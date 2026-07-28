@@ -9,6 +9,12 @@ const labels: Record<ContentType, { title: string; intro: string; index: string 
   writing: { title: "Writing", index: "03", intro: "Clear explanations of machine learning systems, evaluation, reliability, and the craft of shipping AI." },
 };
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(labels).map((type) => ({ type }));
+}
+
 export default async function IndexPage({ params }: { params: Promise<{ type: string }> }) {
   const { type: rawType } = await params;
   if (!(rawType in labels)) notFound();

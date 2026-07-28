@@ -1,4 +1,4 @@
-# basillians.github.io
+# Sillians.github.io
 
 Portfolio for a Senior/Principal ML Engineer or AI Research Engineer. Built with Next.js, Tailwind CSS, and file-based MDX content.
 
@@ -13,4 +13,4 @@ npm install
 npm run dev
 ```
 
-Deploy by importing this repository into Vercel. Every push to the production branch will trigger a deployment.
+Every push to `main` is exported as a static Next.js site and published automatically with GitHub Pages at [https://sillians.github.io](https://sillians.github.io).

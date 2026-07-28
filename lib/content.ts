@@ -11,11 +11,7 @@ export type ContentItem = {
   body: string;
 };
 
-const files = import.meta.glob("../content/**/*.mdx", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-}) as Record<string, string>;
+const contentRoot = path.join(process.cwd(), "content");
 
 function parseFile(path: string, raw: string): ContentItem {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -41,8 +37,16 @@ function parseFile(path: string, raw: string): ContentItem {
 }
 
 export function getAllContent(type?: ContentType) {
-  return Object.entries(files)
-    .map(([path, raw]) => parseFile(path, raw))
+  const types: ContentType[] = type ? [type] : ["projects", "research", "writing"];
+  return types
+    .flatMap((contentType) =>
+      fs.readdirSync(path.join(contentRoot, contentType))
+        .filter((file) => file.endsWith(".mdx"))
+        .map((file) => {
+          const filePath = path.join(contentRoot, contentType, file);
+          return parseFile(filePath, fs.readFileSync(filePath, "utf8"));
+        })
+    )
     .filter((item) => !type || item.type === type)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
@@ -64,3 +68,5 @@ export function renderMarkdown(markdown: string) {
     .map((block) => block.startsWith("<h") || block.startsWith("<pre") ? block : block.startsWith("<li>") ? `<ul>${block}</ul>` : `<p>${block.replace(/\n/g, " ")}</p>`)
     .join("");
 }
+import fs from "node:fs";
+import path from "node:path";

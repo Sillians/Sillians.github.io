@@ -1,6 +1,14 @@
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
-import { ContentType, getContent, renderMarkdown } from "@/lib/content";
+import { ContentType, getAllContent, getContent, renderMarkdown } from "@/lib/content";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return (["projects", "research", "writing"] as ContentType[]).flatMap((type) =>
+    getAllContent(type).map((item) => ({ type, slug: item.slug }))
+  );
+}
 
 export default async function DetailPage({ params }: { params: Promise<{ type: string; slug: string }> }) {
   const { type, slug } = await params;
