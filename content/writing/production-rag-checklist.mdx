@@ -1,0 +1,21 @@
+---
+title: A production RAG checklist that starts with failure modes
+description: The questions I use before choosing embeddings, vector databases, or orchestration frameworks.
+date: 2026-07-02
+tags: RAG, Production, Guide
+featured: true
+---
+## Start with the contract
+
+Before choosing infrastructure, define what a correct answer must contain, what the system should do when evidence is missing, and which errors are unacceptable.
+
+## Then design the measurements
+
+- Can we measure retrieval recall on realistic queries?
+- Can every claim be traced to evidence?
+- Do we know which documents were eligible at request time?
+- How quickly can we detect a stale or broken index?
+
+## Only then choose the stack
+
+Architecture should follow the failure model. A simpler pipeline with strong observability usually beats a complex one whose quality cannot be explained.

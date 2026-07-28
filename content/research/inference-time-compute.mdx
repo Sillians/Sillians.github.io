@@ -1,0 +1,17 @@
+---
+title: Inference-time compute is becoming a systems problem
+description: Notes on test-time scaling, search, verifiers, and the engineering constraints behind better reasoning.
+date: 2026-06-12
+tags: Reasoning, Inference, Paper Notes
+featured: true
+---
+## Research question
+
+How should a production system allocate extra inference compute when the value of another sample or verification step varies by request?
+
+## What transfers to practice
+
+- Adaptive budgets matter more than a single global setting
+- Verifier reliability can dominate generator gains
+- Tail latency makes naive search policies expensive
+- Evaluation must include cost-quality frontiers, not only accuracy

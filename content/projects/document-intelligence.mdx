@@ -1,0 +1,21 @@
+---
+title: Multimodal document intelligence, from ingestion to review
+description: A resilient pipeline for extracting structured evidence from complex documents with human-in-the-loop controls.
+date: 2025-11-21
+tags: Multimodal AI, Pipelines, Human-in-the-loop, MLOps
+featured: true
+---
+## System overview
+
+The pipeline combines layout-aware parsing, vision-language models, schema-constrained extraction, and confidence-based review routing.
+
+## Production concerns
+
+- Idempotent ingestion and replayable jobs
+- Per-field provenance and evidence links
+- Confidence calibration rather than raw model scores
+- Backpressure, dead-letter handling, and audit trails
+
+## Design principle
+
+Automation is most valuable when uncertainty is explicit. The system escalates the right work to people instead of hiding model ambiguity behind a single confidence number.

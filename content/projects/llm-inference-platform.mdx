@@ -1,0 +1,21 @@
+---
+title: LLM inference platform built for predictable scale
+description: A production serving layer balancing latency, throughput, cost, and model quality across changing workloads.
+date: 2026-05-18
+tags: LLM Systems, Kubernetes, vLLM, Observability
+featured: true
+---
+## The problem
+
+Model quality is only one part of a production AI system. The serving layer must stay responsive under bursty traffic, make cost visible, and give engineers enough telemetry to debug quality regressions.
+
+## System design
+
+- Continuous batching and workload-aware routing
+- Model and prompt versioning with safe rollback paths
+- Trace-level latency, token, cost, and quality signals
+- Load tests that mirror real request distributions
+
+## Engineering judgment
+
+The central tradeoff was not simply speed versus quality. It was deciding where the system could degrade gracefully—and making those choices observable before users noticed.

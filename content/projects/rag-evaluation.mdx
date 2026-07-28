@@ -1,0 +1,22 @@
+---
+title: Evaluation infrastructure for a high-stakes RAG system
+description: An offline and online evaluation loop that turns retrieval and generation failures into measurable engineering work.
+date: 2026-03-06
+tags: RAG, Evaluation, LLMOps, Python
+featured: true
+---
+## Why evaluation came first
+
+A RAG demo can look convincing while failing silently in production. This system separates retrieval, grounding, and answer quality so each failure mode can be measured and improved independently.
+
+## What the platform includes
+
+- Curated and adversarial evaluation sets
+- Retrieval recall and ranking diagnostics
+- Groundedness and citation checks
+- Human review queues for ambiguous cases
+- Release gates tied to quality and latency budgets
+
+## Outcome
+
+The evaluation loop makes model and prompt changes reviewable. Teams can answer not only whether a release is better, but where, by how much, and at what operational cost.
