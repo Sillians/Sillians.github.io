@@ -106,7 +106,9 @@ export default function Home() {
           </div>
           <div className="footer-links">
             <a href="https://github.com/Sillians">GitHub ↗</a>
-            <a href="mailto:hello@basillians.github.io">Email ↗</a>
+            <a href="mailto:ihuomacbasil@gmail.com">Email ↗</a>
+            <a href="https://x.com/silbux120824" target="_blank" rel="noreferrer">X ↗</a>
+            <a href="https://www.linkedin.com/in/basil-ihuoma-004356ab/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
           </div>
           <span>© {new Date().getFullYear()} Basil Ihuoma</span>
         </div>

@@ -9,7 +9,7 @@ export function SiteHeader() {
           <Link href="/projects">Projects</Link>
           <Link href="/research">Research</Link>
           <Link href="/writing">Writing</Link>
-          <a className="nav-cta" href="mailto:hello@basillians.github.io">Let&apos;s talk ↗</a>
+          <a className="nav-cta" href="mailto:ihuomacbasil@gmail.com">Let&apos;s talk ↗</a>
         </div>
       </nav>
     </header>

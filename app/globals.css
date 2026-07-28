@@ -99,7 +99,7 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
 .footer-inner > div:first-child { display: flex; align-items: center; gap: 18px; }
 .footer-signature strong { color: var(--paper); font-size: 14px; white-space: nowrap; }
 .footer-inner p { margin: 0; max-width: 280px; line-height: 1.5; }
-.footer-links { display: flex; gap: 20px; color: var(--paper); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 12px 20px; color: var(--paper); }
 
 .index-page { padding: 80px 0 120px; min-height: 80vh; }
 .index-page h1 { margin: 18px 0 18px; font-size: clamp(54px, 7vw, 88px); letter-spacing: -.065em; line-height: .95; }
