@@ -13,7 +13,6 @@ export default function Home() {
       <main>
         <section className="hero shell">
           <div className="eyebrow">
-            <span className="status-dot" />
             Senior ML Engineer · AI Research Engineer
           </div>
           <h1>
