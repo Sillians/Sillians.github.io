@@ -17,7 +17,7 @@ export default function Home() {
           </div>
           <h1>
             I design, build, and deploy
-            <span> production AI systems.</span>
+            <span> production ML/AI systems.</span>
           </h1>
           <p className="hero-copy">
             End-to-end machine learning—from research and evaluation to reliable,

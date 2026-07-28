@@ -11,14 +11,13 @@ export const metadata: Metadata = {
   description: "Senior ML engineer designing, building, and deploying production AI systems.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   openGraph: {
-    title: "Basil Ihuoma — Production AI Systems",
+    title: "Basil Ihuoma — Production ML/AI Systems",
     description: "Research-minded engineering. Production-grade execution.",
     url: "https://sillians.github.io",
     siteName: "Basil Ihuoma",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Basil Ihuoma — Production AI Systems" }],
   },
-  twitter: { card: "summary_large_image", images: ["/og.png"] },
+  twitter: { card: "summary" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
