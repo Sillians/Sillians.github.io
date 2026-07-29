@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Comments } from "@/components/comments";
 import { SiteHeader } from "@/components/site-header";
 import { ContentType, getAllContent, getContent, renderMarkdown } from "@/lib/content";
 
@@ -26,7 +28,18 @@ export default async function DetailPage({ params }: { params: Promise<{ type: s
           <p>{item.description}</p>
           <div className="tags">{item.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
         </header>
+        {item.cover && (
+          <Image
+            className="article-cover"
+            src={item.cover}
+            alt={item.coverAlt || ""}
+            width={1520}
+            height={900}
+            priority
+          />
+        )}
         <article className="article-body" dangerouslySetInnerHTML={{ __html: renderMarkdown(item.body) }} />
+        <Comments />
       </main>
     </>
   );

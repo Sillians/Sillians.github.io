@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { ArrowDownRight, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/content-card";
+import { Reveal } from "@/components/reveal";
 import { SiteHeader } from "@/components/site-header";
 import { getAllContent } from "@/lib/content";
 
@@ -12,30 +15,31 @@ export default function Home() {
       <SiteHeader />
       <main>
         <section className="hero shell">
-          <div className="eyebrow">
-            Senior ML Engineer · AI Research Engineer
-          </div>
-          <h1>
-            I design, build, and deploy
-            <span> production-grade ML and AI systems.</span>
-          </h1>
-          <p className="hero-copy">
-            End-to-end machine learning, from research and evaluation to reliable,
-            observable systems in production.
-          </p>
-          <div className="hero-actions">
-            <Link className="button primary" href="#projects">
-              View selected work <span aria-hidden="true">↘</span>
-            </Link>
-            <a
-              className="button secondary"
-              href="https://github.com/Sillians"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub <span aria-hidden="true">↗</span>
-            </a>
-          </div>
+          <Reveal>
+            <div className="eyebrow">
+              Senior ML Engineer · AI Research Engineer
+            </div>
+            <h1>
+              I design, build, and deploy
+              <span> production-grade ML and AI systems.</span>
+            </h1>
+            <p className="hero-copy">
+              End-to-end machine learning, from research and evaluation to reliable,
+              observable systems in production.
+            </p>
+            <div className="hero-actions">
+              <Button asChild>
+                <Link href="#projects">
+                  View selected work <ArrowDownRight aria-hidden="true" size={17} strokeWidth={1.8} />
+                </Link>
+              </Button>
+              <Button asChild variant="secondary">
+                <a href="https://github.com/Sillians" target="_blank" rel="noreferrer">
+                  GitHub <ArrowUpRight aria-hidden="true" size={17} strokeWidth={1.8} />
+                </a>
+              </Button>
+            </div>
+          </Reveal>
           <div className="capability-strip" aria-label="Core capabilities">
             <div><strong>01</strong><span>Model systems</span></div>
             <div><strong>02</strong><span>ML platforms</span></div>
@@ -50,7 +54,7 @@ export default function Home() {
               <span className="section-index">01 / PROJECTS</span>
               <h2>Selected systems</h2>
             </div>
-            <Link href="/projects">View all projects <span>→</span></Link>
+            <Link href="/projects">View all projects <ArrowRight aria-hidden="true" size={14} /></Link>
           </div>
           <div className="project-grid">
             {featured.filter((item) => item.type === "projects").map((item, index) => (
@@ -77,7 +81,7 @@ export default function Home() {
           <div className="library-column">
             <div className="section-heading compact">
               <div><span className="section-index">02 / RESEARCH</span><h2>Learning in public</h2></div>
-              <Link href="/research">All <span>→</span></Link>
+              <Link href="/research">All <ArrowRight aria-hidden="true" size={14} /></Link>
             </div>
             <div className="list">
               {featured.filter((item) => item.type === "research").map((item) => (
@@ -88,7 +92,7 @@ export default function Home() {
           <div className="library-column">
             <div className="section-heading compact">
               <div><span className="section-index">03 / WRITING</span><h2>Technical notes</h2></div>
-              <Link href="/writing">All <span>→</span></Link>
+              <Link href="/writing">All <ArrowRight aria-hidden="true" size={14} /></Link>
             </div>
             <div className="list">
               {featured.filter((item) => item.type === "writing").map((item) => (
@@ -105,10 +109,10 @@ export default function Home() {
             <p>Building AI systems that survive contact with production.</p>
           </div>
           <div className="footer-links">
-            <a href="https://github.com/Sillians">GitHub ↗</a>
-            <a href="mailto:ihuomacbasil@gmail.com">Email ↗</a>
-            <a href="https://x.com/silbux120824" target="_blank" rel="noreferrer">X ↗</a>
-            <a href="https://www.linkedin.com/in/basil-ihuoma-004356ab/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a href="https://github.com/Sillians">GitHub <ArrowUpRight aria-hidden="true" size={13} /></a>
+            <a href="mailto:ihuomacbasil@gmail.com">Email <ArrowUpRight aria-hidden="true" size={13} /></a>
+            <a href="https://x.com/silbux120824" target="_blank" rel="noreferrer">X <ArrowUpRight aria-hidden="true" size={13} /></a>
+            <a href="https://www.linkedin.com/in/basil-ihuoma-004356ab/" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight aria-hidden="true" size={13} /></a>
           </div>
           <span>© {new Date().getFullYear()} Basil Ihuoma</span>
         </div>

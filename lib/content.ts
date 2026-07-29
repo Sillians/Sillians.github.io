@@ -11,6 +11,8 @@ export type ContentItem = {
   topic?: string;
   subtopic?: string;
   paper?: string;
+  cover?: string;
+  coverAlt?: string;
   body: string;
 };
 
@@ -38,6 +40,8 @@ function parseFile(path: string, raw: string): ContentItem {
     topic: data.topic,
     subtopic: data.subtopic,
     paper: data.paper,
+    cover: data.cover,
+    coverAlt: data.coverAlt,
     body: match[2].trim(),
   };
 }

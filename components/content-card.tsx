@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import type { ContentItem } from "@/lib/content";
 
-export function ContentCard({ item, index = 0, featured = false, compact = false }: {
+export function ContentCard({ item, index = 0, compact = false }: {
   item: ContentItem; index?: number; featured?: boolean; compact?: boolean;
 }) {
   const href = `/${item.type}/${item.slug}`;
@@ -10,13 +11,13 @@ export function ContentCard({ item, index = 0, featured = false, compact = false
       <Link className="content-row" href={href}>
         <span className="meta">{item.date}</span>
         <div><h3>{item.title}</h3><p>{item.description}</p></div>
-        <span>↗</span>
+        <ArrowUpRight aria-hidden="true" size={17} strokeWidth={1.7} />
       </Link>
     );
   }
   return (
     <Link className="project-card" href={href}>
-      <div className="card-top"><span className="card-number">0{index + 1} / {item.year}</span><span className="card-arrow">↗</span></div>
+      <div className="card-top"><span className="card-number">0{index + 1} / {item.year}</span><ArrowUpRight className="card-arrow" aria-hidden="true" size={22} strokeWidth={1.6} /></div>
       <h3>{item.title}</h3>
       <p>{item.description}</p>
       <div className="tags">{item.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>

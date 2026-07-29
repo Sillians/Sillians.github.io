@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export function SiteHeader() {
   return (
@@ -9,7 +10,9 @@ export function SiteHeader() {
           <Link href="/projects">Projects</Link>
           <Link href="/research">Research</Link>
           <Link href="/writing">Writing</Link>
-          <a className="nav-cta" href="mailto:ihuomacbasil@gmail.com">Let&apos;s talk ↗</a>
+          <a className="nav-cta" href="mailto:ihuomacbasil@gmail.com">
+            Let&apos;s talk <ArrowUpRight aria-hidden="true" size={14} strokeWidth={1.8} />
+          </a>
         </div>
       </nav>
     </header>
