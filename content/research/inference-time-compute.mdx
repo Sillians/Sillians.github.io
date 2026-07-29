@@ -4,14 +4,37 @@ description: Notes on test-time scaling, search, verifiers, and the engineering 
 date: 2026-06-12
 tags: Reasoning, Inference, Paper Notes
 featured: true
+topic: Reasoning
+subtopic: Inference-time scaling
+paper: Test-time compute and verifier-guided search
 ---
-## Research question
+## Paper
+
+Test-time compute and verifier-guided search.
+
+## TLDR
+
+Reasoning quality can improve when a model spends more compute at inference time, but production value depends on allocating that compute adaptively rather than applying one expensive policy to every request.
+
+## Problem
 
 How should a production system allocate extra inference compute when the value of another sample or verification step varies by request?
 
-## What transfers to practice
+## Method
+
+Compare inference policies that generate multiple candidates, search over intermediate reasoning steps, or use a verifier to select and refine answers. Evaluate them across quality, latency, and token-cost frontiers.
+
+## Key Insight
 
 - Adaptive budgets matter more than a single global setting
 - Verifier reliability can dominate generator gains
 - Tail latency makes naive search policies expensive
 - Evaluation must include cost-quality frontiers, not only accuracy
+
+## Limitations
+
+Verifier errors can amplify confidently wrong reasoning, while benchmark gains may not transfer to open-ended or distribution-shifted tasks. Extra sampling also creates steep tail-latency and serving-cost penalties.
+
+## Applications
+
+High-value reasoning tasks, code generation, mathematical problem solving, planning systems, and production routers that reserve deeper inference for uncertain requests.

@@ -4,12 +4,35 @@ description: Why model-centric optimization misses the reliability gains availab
 date: 2026-02-14
 tags: AI Systems, Architecture, Research
 featured: true
+topic: AI Evaluation
+subtopic: Evaluating AI systems
+paper: Compound AI Systems
 ---
-## Main idea
+## Paper
+
+Compound AI Systems.
+
+## TLDR
 
 Useful AI products are rarely a single model call. They are systems of retrievers, models, tools, policies, caches, and evaluators whose interactions determine production quality.
 
-## Questions I keep
+## Problem
+
+Model-level benchmarks do not explain how a complete AI product behaves when retrieval, orchestration, tools, prompts, and fallback policies interact.
+
+## Method
+
+Treat the application as a graph of measurable components. Define system-level success criteria, isolate component failure modes, and run targeted evaluations alongside end-to-end tests.
+
+## Key Insight
+
+System quality is often improved more effectively by changing orchestration, data, or evaluation than by replacing the foundation model.
+
+## Limitations
+
+Component metrics can miss interaction effects. End-to-end judgments remain expensive, and the evaluation set must evolve as users discover new failure modes.
+
+## Applications
 
 - Which component owns each failure mode?
 - What can be measured without an expensive human label?

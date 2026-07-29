@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ContentCard } from "@/components/content-card";
 import { SiteHeader } from "@/components/site-header";
+import { ResearchIndex } from "@/components/research-index";
 import { ContentType, getAllContent } from "@/lib/content";
 
 const labels: Record<ContentType, { title: string; intro: string; index: string }> = {
@@ -28,9 +29,13 @@ export default async function IndexPage({ params }: { params: Promise<{ type: st
         <span className="section-index">{label.index} / ARCHIVE</span>
         <h1>{label.title}</h1>
         <p className="index-intro">{label.intro}</p>
-        <div className="index-list">
-          {items.map((item, index) => <ContentCard item={item} index={index} featured key={item.slug} />)}
-        </div>
+        {type === "research" ? (
+          <ResearchIndex items={items} />
+        ) : (
+          <div className="index-list">
+            {items.map((item, index) => <ContentCard item={item} index={index} featured key={item.slug} />)}
+          </div>
+        )}
       </main>
     </>
   );

@@ -8,6 +8,9 @@ export type ContentItem = {
   year: string;
   tags: string[];
   featured: boolean;
+  topic?: string;
+  subtopic?: string;
+  paper?: string;
   body: string;
 };
 
@@ -32,6 +35,9 @@ function parseFile(path: string, raw: string): ContentItem {
     year: data.date?.slice(0, 4) || "",
     tags: data.tags ? data.tags.split(",").map((tag) => tag.trim()) : [],
     featured: data.featured === "true",
+    topic: data.topic,
+    subtopic: data.subtopic,
+    paper: data.paper,
     body: match[2].trim(),
   };
 }
