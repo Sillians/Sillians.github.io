@@ -17,10 +17,10 @@ export default function Home() {
           </div>
           <h1>
             I design, build, and deploy
-            <span> production ML/AI systems.</span>
+            <span> production-grade ML and AI systems.</span>
           </h1>
           <p className="hero-copy">
-            End-to-end machine learning—from research and evaluation to reliable,
+            End-to-end machine learning, from research and evaluation to reliable,
             observable systems in production.
           </p>
           <div className="hero-actions">

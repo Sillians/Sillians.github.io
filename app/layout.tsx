@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Senior ML engineer designing, building, and deploying production AI systems.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   openGraph: {
-    title: "Basil Ihuoma — Production ML/AI Systems",
+    title: "Basil Ihuoma — Production-Grade ML and AI Systems",
     description: "Research-minded engineering. Production-grade execution.",
     url: "https://sillians.github.io",
     siteName: "Basil Ihuoma",
