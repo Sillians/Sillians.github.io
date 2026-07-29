@@ -90,6 +90,17 @@ a { color: inherit; text-decoration: none; }
 .principles strong { color: var(--paper); font: 600 12px var(--font-geist-mono); text-transform: uppercase; }
 .principles p { margin: 0; color: #bfc4c0; line-height: 1.6; }
 
+.interests { padding: 120px 0 20px; }
+.interests-heading { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 52px; }
+.interests-heading h2 { margin: 14px 0 0; font-size: clamp(38px, 5vw, 60px); line-height: 1; letter-spacing: -.055em; font-weight: 570; }
+.interests-heading p { max-width: 510px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.interest-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); }
+.interest-item { min-height: 150px; padding: 22px 22px 25px 0; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+.interest-item:nth-child(3n + 2), .interest-item:nth-child(3n + 3) { padding-left: 22px; }
+.interest-item:nth-child(3n) { border-right: 0; }
+.interest-item span { color: #969990; font: 500 10px var(--font-geist-mono); }
+.interest-item h3 { max-width: 260px; margin: 48px 0 0; font-size: 21px; line-height: 1.15; letter-spacing: -.035em; font-weight: 580; }
+
 .library { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
 .section-heading.compact { margin-bottom: 20px; }
 .section-heading.compact h2 { font-size: 30px; }
@@ -191,6 +202,11 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   .capability-strip div:nth-child(3) { padding-left: 0; }
   .work, .library { padding: 80px 0; }
   .project-grid, .proof-grid, .library, .index-list { grid-template-columns: 1fr; }
+  .interests-heading { grid-template-columns: 1fr; gap: 24px; }
+  .interest-grid { grid-template-columns: 1fr 1fr; }
+  .interest-item:nth-child(3n + 2), .interest-item:nth-child(3n + 3) { padding-left: 0; }
+  .interest-item:nth-child(3n) { border-right: 1px solid var(--line); }
+  .interest-item:nth-child(even) { padding-left: 20px; border-right: 0; }
   .topic-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }
   .research-section-label, .research-paper-row { grid-template-columns: 1fr; gap: 14px; }
   .research-paper-row { position: relative; padding-right: 28px; }

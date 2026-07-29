@@ -77,6 +77,34 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="interests shell" aria-labelledby="interests-title">
+          <div className="interests-heading">
+            <div>
+              <span className="section-index">CURRENT INTERESTS</span>
+              <h2 id="interests-title">What I&apos;m exploring now.</h2>
+            </div>
+            <p>
+              Research and engineering directions shaping how I think about
+              capable, efficient, and production-ready AI systems.
+            </p>
+          </div>
+          <div className="interest-grid">
+            {[
+              "Vision-Language Models",
+              "Agents",
+              "Embodied AI",
+              "Reasoning",
+              "MLOps",
+              "Inference Optimization",
+            ].map((interest, index) => (
+              <div className="interest-item" key={interest}>
+                <span>0{index + 1}</span>
+                <h3>{interest}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="library shell">
           <div className="library-column">
             <div className="section-heading compact">
