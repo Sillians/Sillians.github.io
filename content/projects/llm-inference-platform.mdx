@@ -5,17 +5,37 @@ date: 2026-05-18
 tags: LLM Systems, Kubernetes, vLLM, Observability
 featured: true
 ---
-## The problem
+## Architecture
 
-Model quality is only one part of a production AI system. The serving layer must stay responsive under bursty traffic, make cost visible, and give engineers enough telemetry to debug quality regressions.
+The serving plane separates the public API, workload-aware router, model-serving pools, and telemetry pipeline. Kubernetes provides the control plane; versioned model artifacts and prompt configurations make every response traceable to the exact release that produced it.
 
-## System design
+## Data Flow
 
-- Continuous batching and workload-aware routing
-- Model and prompt versioning with safe rollback paths
-- Trace-level latency, token, cost, and quality signals
-- Load tests that mirror real request distributions
+- A request enters through the API layer with tenant, model, and latency-budget metadata.
+- The router applies policy, selects a compatible serving pool, and sends the request to a continuously batched inference worker.
+- The worker returns the generated response while traces record request, token, latency, cost, and release-version signals.
+- Aggregated telemetry feeds operational dashboards and the release-quality loop.
 
-## Engineering judgment
+## Deployment
 
-The central tradeoff was not simply speed versus quality. It was deciding where the system could degrade gracefully—and making those choices observable before users noticed.
+- Containerized API, router, and model-serving workloads are deployed to Kubernetes.
+- Model and prompt versions move through explicit release stages with canary traffic and a documented rollback path.
+- Infrastructure and deployment configuration are versioned alongside the service so environments are reproducible.
+
+## Scaling
+
+- Continuous batching increases GPU utilization without making tail latency unpredictable.
+- Workload-aware routing isolates interactive traffic from longer-running or bulk requests.
+- Horizontal worker scaling follows queue depth, token throughput, GPU utilization, and latency-budget pressure rather than request count alone.
+
+## Evaluation
+
+- Load tests use representative prompt lengths, output lengths, and burst patterns rather than synthetic average requests.
+- Release gates compare quality, latency, token efficiency, and cost against the current production baseline.
+- Prompt and model changes are evaluated as separate variables, making regressions attributable and reversible.
+
+## Monitoring
+
+- Trace-level telemetry captures time-to-first-token, end-to-end latency, tokens, cost, errors, and model/prompt versions.
+- Dashboards separate saturation, queueing, model-server health, and application-level failures.
+- Alerts focus on user-visible SLO risk and quality regressions, with enough context to identify the affected release quickly.

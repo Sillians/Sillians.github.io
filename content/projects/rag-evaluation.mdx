@@ -5,18 +5,37 @@ date: 2026-03-06
 tags: RAG, Evaluation, LLMOps, Python
 featured: true
 ---
-## Why evaluation came first
+## Architecture
 
-A RAG demo can look convincing while failing silently in production. This system separates retrieval, grounding, and answer quality so each failure mode can be measured and improved independently.
+The platform separates corpus ingestion, retrieval, answer generation, evaluation, and review. This boundary keeps a retrieval failure, a grounding failure, and a generation failure independently measurable instead of collapsing them into a single answer score.
 
-## What the platform includes
+## Data Flow
 
-- Curated and adversarial evaluation sets
-- Retrieval recall and ranking diagnostics
-- Groundedness and citation checks
-- Human review queues for ambiguous cases
-- Release gates tied to quality and latency budgets
+- Documents are chunked, indexed, and versioned with source metadata.
+- A query retrieves and ranks candidate evidence before the generation layer produces an answer with citations.
+- Offline and online traces are scored for retrieval quality, grounding, answer quality, latency, and cost.
+- Low-confidence or disagreement cases enter a human-review queue and become candidates for the next evaluation set.
 
-## Outcome
+## Deployment
 
-The evaluation loop makes model and prompt changes reviewable. Teams can answer not only whether a release is better, but where, by how much, and at what operational cost.
+- Ingestion, indexing, evaluation jobs, and serving components are independently deployable so corpus updates do not require an application release.
+- Dataset, retriever, prompt, and model versions are recorded together for each evaluation and production release.
+- Release gates prevent a configuration from progressing when it exceeds an agreed quality, latency, or cost budget.
+
+## Scaling
+
+- Batch evaluation runs asynchronously and can scale independently from online query traffic.
+- Retrieval indexes are partitioned and refreshed incrementally to avoid rebuilding the entire corpus for routine updates.
+- Review queues prioritize high-impact, high-uncertainty examples so human attention scales with risk rather than volume.
+
+## Evaluation
+
+- Curated and adversarial evaluation sets test retrieval recall, ranking quality, groundedness, citation support, and answer usefulness.
+- Component-level diagnostics distinguish missing evidence, poor ranking, unsupported claims, and response-quality failures.
+- Human review resolves ambiguous examples and supplies calibrated reference judgments for the automated metrics.
+
+## Monitoring
+
+- Online monitoring tracks retrieval hit quality, citation coverage, groundedness signals, latency, token usage, and cost.
+- Dashboards compare live traffic with the release baseline to surface drift in queries, corpus coverage, and answer behavior.
+- Alerts route notable regressions to the owning component rather than treating the entire RAG system as a black box.

@@ -5,17 +5,38 @@ date: 2025-11-21
 tags: Multimodal AI, Pipelines, Human-in-the-loop, MLOps
 featured: true
 ---
-## System overview
+## Architecture
 
-The pipeline combines layout-aware parsing, vision-language models, schema-constrained extraction, and confidence-based review routing.
+The system combines a durable ingestion layer, layout-aware parsing, vision-language extraction, schema validation, and a human-review workspace. Each extracted field retains provenance back to the source document and evidence region.
 
-## Production concerns
+## Data Flow
 
-- Idempotent ingestion and replayable jobs
-- Per-field provenance and evidence links
-- Confidence calibration rather than raw model scores
-- Backpressure, dead-letter handling, and audit trails
+- Documents enter an idempotent ingestion service and receive a durable job identifier.
+- Parsing and OCR produce layout-aware document representations for the extraction workers.
+- Vision-language models generate schema-constrained fields with evidence references and calibrated confidence signals.
+- Validation routes accepted records downstream and sends uncertain or conflicting fields to a review queue.
+- Reviewed corrections become audit data and feedback for improving the pipeline.
 
-## Design principle
+## Deployment
 
-Automation is most valuable when uncertainty is explicit. The system escalates the right work to people instead of hiding model ambiguity behind a single confidence number.
+- Ingestion, parsing, extraction, validation, and review services are independently deployable workers.
+- Versioned extraction schemas and model configurations allow a document to be replayed against a known release.
+- Dead-letter queues and replay tooling make failed jobs recoverable without manual reconstruction.
+
+## Scaling
+
+- Asynchronous queues decouple document upload from compute-intensive parsing and model inference.
+- Workers scale by job backlog and document complexity, while backpressure protects downstream systems.
+- Idempotent jobs and checkpointed stages make retries safe when workloads spike or a worker fails.
+
+## Evaluation
+
+- Evaluation measures field-level accuracy, evidence alignment, schema validity, and calibrated confidence rather than document-level success alone.
+- Stratified test sets include difficult layouts, low-quality scans, and ambiguous fields to expose failure modes before release.
+- Human-review outcomes are sampled to validate calibration and to identify categories where automation should defer earlier.
+
+## Monitoring
+
+- Operational dashboards track queue age, stage throughput, retry rate, review rate, and end-to-end processing time.
+- Quality monitoring surfaces confidence distribution shifts, schema-validation failures, and reviewer overrides by document type.
+- Audit trails retain source references, model and schema versions, decisions, and reviewer actions for every processed record.

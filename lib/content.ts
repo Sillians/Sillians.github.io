@@ -17,6 +17,14 @@ export type ContentItem = {
 };
 
 const contentRoot = path.join(process.cwd(), "content");
+const requiredProjectSections = [
+  "Architecture",
+  "Data Flow",
+  "Deployment",
+  "Scaling",
+  "Evaluation",
+  "Monitoring",
+];
 
 function parseFile(path: string, raw: string): ContentItem {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -29,6 +37,17 @@ function parseFile(path: string, raw: string): ContentItem {
   const parts = path.split("/");
   const type = parts[parts.length - 2] as ContentType;
   const slug = parts.at(-1)!.replace(/\.mdx$/, "");
+  const body = match[2].trim();
+
+  if (type === "projects") {
+    const missingSections = requiredProjectSections.filter(
+      (section) => !new RegExp(`^## ${section}$`, "m").test(body)
+    );
+    if (missingSections.length) {
+      throw new Error(`Project ${slug} is missing required sections: ${missingSections.join(", ")}`);
+    }
+  }
+
   return {
     type, slug,
     title: data.title,
@@ -42,7 +61,7 @@ function parseFile(path: string, raw: string): ContentItem {
     paper: data.paper,
     cover: data.cover,
     coverAlt: data.coverAlt,
-    body: match[2].trim(),
+    body,
   };
 }
 
