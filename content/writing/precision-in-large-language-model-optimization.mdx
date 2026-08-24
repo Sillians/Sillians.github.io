@@ -5,6 +5,7 @@ date: 2026-08-10
 tags: LLM, Mixed-Precision Training, Memory footprint, Optimization, Deep Learning
 featured: true
 ---
+import BlogImage from "@/components/BlogImage";
 
 
 ## Introduction
@@ -31,8 +32,8 @@ A simplified mixed-precision training pipeline looks like this:
 
 
 
-<img 
-  src="/images/writing/mixed-precision.png" 
+{/* <img 
+  src="/images/writings/mixed-precision.png" 
   alt="Mixed Precision" 
   width="400" 
   style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
@@ -41,15 +42,22 @@ A simplified mixed-precision training pipeline looks like this:
 
 
 <img
-  src="/images/writing/mixed-precision.png"
+  src="/images/writings/mixed-precision.png"
   alt="Mixed Precision"
   width={400}
   height={300} 
   style={{ maxWidth: "100%", height: "auto", margin: "0 auto" }}
+/> */}
+
+
+<BlogImage
+  src="/Users/user/Projects/basillians.github.io/images/writings/mixed-precision.png"
+  alt="Mixed-precision training pipeline"
+  width={400}
+  style={{ maxWidth: "100%", height: "auto", margin: "0 auto" }}
+  caption="Fig. 1 — Mixed-precision training pipeline"
 />
 
-
-![Mixed Precision](/images/writing/mixed-precision.png)
 
 The important point is that not everything has to use the same precision.
 
