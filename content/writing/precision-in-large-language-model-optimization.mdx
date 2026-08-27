@@ -1,12 +1,12 @@
 ---
 title: Precision in Large Language Model Optimization; A Deep Dive into Mixed-Precision Training 
-description: This article explores the intricacies of mixed-precision training in large language models, highlighting the benefits, challenges, and best practices for achieving optimal performance without compromising model accuracy.
+description: An overview of mixed-precision training in large language models, covering its benefits, challenges, and best practices.
 date: 2026-08-10
 tags: LLM, Mixed-Precision Training, Memory footprint, Optimization, Deep Learning
 featured: true
 ---
 
-## Introduction
+## **Introduction**
 
 Large Language Models (LLMs) have revolutionized the field of natural language processing, enabling unprecedented capabilities in understanding and generating human-like text. 
 Training these models, however, is a resource-intensive process that requires careful consideration of computational efficiency and model accuracy, often making it challenging 
@@ -18,7 +18,7 @@ its advantages, `precision vs Quantization`, and the challenges associated with 
 but most of these techniques are versatile and applicable to other deep learning architectures as well. 
 
 
-## Understanding Mixed-Precision Training
+## **Understanding Mixed-Precision Training**
 
 Mixed-precision training typically means training an LLM using multiple numerical precisions rather than representing every computation in `FP32`. It is one of the essential techniques
 that lets us significantly boost training speeds on modern GPUs. Sometimes, this can results in `2x` to `3x` speed-ups! Typically, the model uses lower-precision formats such as `FP16`, 
@@ -27,7 +27,7 @@ that lets us significantly boost training speeds on modern GPUs. Sometimes, this
 A simplified mixed-precision training pipeline looks like this:
 
 
-![Mixed-precision training pipeline](/images/writing/mixed-precision.png){width=700} 
+![Mixed-precision training pipeline](/images/writing/mixed-precision.png){width=700 height=1300} 
 **Figure 1. - Mixed-precision Training Pipeline**
 
 
@@ -145,7 +145,8 @@ Here are some numerical properties of the different precision types [torch.finfo
 **Figure 5. - Numerical properties of bit-precision.**
 
 
-## Mixed-Precision Training Mechanics
+
+## **Mixed-Precision Training Mechanics**
 
 It is referred to as `mixed-` rather than `low-`precision training because we don't transfer all parameters and operations to `16-bit` floats. Instead, we switch between 32-bit
 and 16-bit operations during training, hence, the term `mixed` precision.
@@ -228,9 +229,9 @@ accuracy.
 
 
 
-## Precision vs Quantization
+## **Precision vs Quantization**
 
-- **Precision** refers to the number of bits used to represent numerical values during computation, such as **FP32, FP16, BF16, FP8, INT8, or INT4**. Lower precision reduces memory usage and can increase computational throughput, while potentially introducing numerical errors.
+- **Precision** simply refers to the number of bits used to represent numerical values during computation, such as **FP32, FP16, BF16, FP8, INT8, or INT4**. Lower precision reduces memory usage and can increase computational throughput, while potentially introducing numerical errors.
 
 - **Quantization** on the otherhand is the **process of converting values from a higher-precision representation to a lower-precision representation**, usually by mapping continuous values to a smaller set of discrete values. If we want to increase the model performance during inference even more, we can also move beyond lower floating point precision and use quantization. It converts the model weights from floats to low-bit integer representations, for example, 8-bit integers (and, recently, even 4-bit integers).
 
@@ -260,7 +261,7 @@ For example, converting an LLM's **FP16 weights to INT4** is **quantization**, w
 
 
 
-## Benefits of Mixed-Precision Training in LLMs
+## **Benefits of Mixed-Precision Training in LLMs**
 
 Mixed-precision training provides several major benefits for large language models:
 
@@ -296,7 +297,7 @@ The basic trade-off is **computational efficiency vs. numerical precision**: use
 
 
 
-## Challenges of Mixed-Precision Training in LLMs
+## **Challenges of Mixed-Precision Training in LLMs**
 
 Mixed-precision is so fundamental to training LLM using multiple numerical percisions but also have its challenges. 
 
@@ -316,7 +317,7 @@ Mixed-precision is so fundamental to training LLM using multiple numerical perci
 
 **Core trade-off:**
 
-![Core trade-off](/images/writing/core-tradeoff.png){width=750}
+![Core trade-off](/images/writing/core-tradeoff.png){width=700 height=550}
 **Figure 10. - Core trade-off of mixed-precision.**
 
 
@@ -324,7 +325,7 @@ The goal is therefore **not to use the lowest precision everywhere**, but to use
 
 
 
-## Best Practices for Optimal Performance in Mixed-Precision Training
+## **Best Practices for Optimal Performance in Mixed-Precision Training**
 
 For LLMs, the goal is to maximize throughput and memory efficiency without sacrificing numerical stability or model quality.
 
@@ -504,19 +505,20 @@ FP8:
 FP8 looks better—but you must also verify that convergence and final model quality remain acceptable.
 
 
-## References
 
-[1] [Accelerating Large Language Models with Mixed-Precision Techniques](https://sebastianraschka.com/blog/2023/llm-mixed-precision-copy.html)
+## **References**
 
-[2] [From Precision to Quantization: A Practical Guide to Faster, Cheaper LLMs](https://deepinfra.com/blog/precision-to-quantization-faster-cheaper-llms)
+1. [Accelerating Large Language Models with Mixed-Precision Techniques](https://sebastianraschka.com/blog/2023/llm-mixed-precision-copy.html)
 
-[3] [Optimizing LLM Accuracy](https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy)
+2. [From Precision to Quantization: A Practical Guide to Faster, Cheaper LLMs](https://deepinfra.com/blog/precision-to-quantization-faster-cheaper-llms)
 
-[4] [MIXED PRECISION TRAINING](https://arxiv.org/pdf/1710.03740) - Sharan Narang∗, Gregory Diamos, Erich Elsen† et al., 2018
+3. [Optimizing LLM Accuracy](https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy)
 
-[5] [Data Types and Precision (FP16, INT8)](https://apxml.com/courses/llm-model-sizes-hardware/chapter-3-model-size-hardware-connection/data-types-precision)
+4. [MIXED PRECISION TRAINING](https://arxiv.org/pdf/1710.03740) - Sharan Narang∗, Gregory Diamos, Erich Elsen† et al., 2018
 
-[6] [Video Series: Mixed-Precision Training Techniques Using Tensor Cores for Deep Learning](https://developer.nvidia.com/blog/video-mixed-precision-techniques-tensor-cores-deep-learning/)
+5. [Data Types and Precision (FP16, INT8)](https://apxml.com/courses/llm-model-sizes-hardware/chapter-3-model-size-hardware-connection/data-types-precision)
+
+6. [Video Series: Mixed-Precision Training Techniques Using Tensor Cores for Deep Learning](https://developer.nvidia.com/blog/video-mixed-precision-techniques-tensor-cores-deep-learning/)
 
 
 
