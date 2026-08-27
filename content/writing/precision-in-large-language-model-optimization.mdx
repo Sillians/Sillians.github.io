@@ -27,15 +27,8 @@ that lets us significantly boost training speeds on modern GPUs. Sometimes, this
 A simplified mixed-precision training pipeline looks like this:
 
 
-![Mixed Precision](/Users/user/Projects/basillians.github.io/images/writings/mixed-precision.png)
-
-<img
-  src="/Users/user/Projects/basillians.github.io/images/writings/mixed-precision.png"
-  alt="Mixed Precision"
-  width="500"
-  height="450"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
+![Mixed-precision training pipeline](/images/writing/mixed-precision.png){width=700} 
+**Figure 1. - Mixed-precision Training Pipeline**
 
 
 The important point is that not everything has to use the same precision.
@@ -48,44 +41,34 @@ representation, which can vary in precision.
 
 Floating-point representation is a method of encoding real numbers in a way that can accommodate a wide range of values. They are split into three main components: 
 
-- `the sign bit (1 bit)`: indicating whether the number is positive or negative, 
+- `the sign bit (1 bit)`: indicating whether the number is positive or negative,
 - `the exponent (8 bits)`: shifts the binary point left or right by using a stored bias value, and 
 - `the mantissa (also called the significand or fraction) (23 bits)`: determines the precision of the number.
 
+
 Different floating-point formats allocate different numbers of bits to these components, resulting in varying levels of precision and range.
 
-- *FP32* uses 1 bit for the sign, 8 bits for the exponent, and 23 bits for the mantissa, while 
-- *FP16* uses 1 bit for the sign, 5 bits for the exponent, and 10 bits for the mantissa, and 
-- *bfloat16* uses 1 bit for the sign, 8 bits for the exponent, and 7 bits for the mantissa. 
+- **FP32** uses 1 bit for the sign, 8 bits for the exponent, and 23 bits for the mantissa, while 
+- **FP16** uses 1 bit for the sign, 5 bits for the exponent, and 10 bits for the mantissa, and 
+- **bfloat16** uses 1 bit for the sign, 8 bits for the exponent, and 7 bits for the mantissa. 
 
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/32bit-16bit-precision.webp" 
-  alt="From 32-Bit to 16-Bit Precision" 
-  width="750" 
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig.2 From 32-Bit to 16-Bit Precision</div>
+![From 32-Bit to 16-Bit Precision](/images/writing/32bit-16bit-precision.webp){width=750}
+**Figure 2. - From 32-Bit to 16-Bit Precision**
+
+
 
 The precision of a floating-point number is determined by the number of bits allocated to each of these components.
 
 Each float format usually has 1 bit to represent the number’s sign, i.e., negative or positive. The rest of the bits are split between range and precision:
 
-- `Range:` The number of range bits determines the range of values the format can represent. More bits means a wider range. This is similar to how scientific notation works, 
-where the exponent determines the scale of the number. For example, a larger exponent allows for representing larger numbers, while a smaller exponent allows for representing smaller numbers.
+- `Range:` The number of range bits determines the range of values the format can represent. More bits means a wider range. This is similar to how scientific notation works, where the exponent determines the scale of the number. For example, a larger exponent allows for representing larger numbers, while a smaller exponent allows for representing smaller numbers.
 
-- `Precision:` The number of precision bits determines the precision of the format. More bits means higher precision. This is similar to how the mantissa works in scientific notation, 
-where the mantissa determines the significant digits of the number. A larger mantissa allows for representing more significant digits, while a smaller mantissa allows for representing 
-fewer significant digits. For example, if you convert `10.1234` to a format that can support only two decimal digits, this value becomes `10.12`, which is less precise than the original value.
+- `Precision:` The number of precision bits determines the precision of the format. More bits means higher precision. This is similar to how the mantissa works in scientific notation, where the mantissa determines the significant digits of the number. A larger mantissa allows for representing more significant digits, while a smaller mantissa allows for representing fewer significant digits. For example, if you convert `10.1234` to a format that can support only two decimal digits, this value becomes `10.12`, which is less precise than the original value.
 
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/numerical-formats.png" 
-  alt="Different Numerical Formats with their range and precision" 
-  width="750" 
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 3. Different numerical formats with their range and precision.</div>
+![Different Numerical Formats with their range and precision](/images/writing/numerical-formats.png){width=750}
+**Figure 3. - Different numerical formats with their range and precision**
 
 
 Precision in large language models refers to the format and accuracy of numerical representations used for computations during model training and inference. These numerical representations 
@@ -104,6 +87,7 @@ lower precision formats for certain computations while maintaining higher precis
 
 Some of the most common precision formats used in large language models include:
 
+
 | Precision | Bits | Typical use                        | Memory vs FP32 |
 | --------- | ---: | ---------------------------------- | -------------: |
 | FP32      |   32 | Full-precision training/reference  |             1× |
@@ -118,7 +102,7 @@ Different precision formats offer varying trade-offs between memory usage, compu
 specific requirements of the model, the available hardware, and the desired balance between speed and accuracy. Mixed-precision training leverages these trade-offs to optimize the 
 training of large language models, enabling faster training times and reduced memory usage without sacrificing model accuracy.
 
-For example, a model with *7 billion* parameters requires approximately:
+For example, a model with **7 billion** parameters requires approximately:
 
 - with `FP32` weights: $7B \times 4 \text{ bytes} \approx 28\text{ GB}$
 
@@ -126,16 +110,13 @@ For example, a model with *7 billion* parameters requires approximately:
 
 - With `INT4`: $7B \times 0.5 \text{ bytes} \approx 3.5\text{ GB}$
 
+
 Real memory consumption is somewhat higher because of metadata, scales, activations, KV cache, and other runtime state.
 
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/mixed-precision-code.png" 
-  alt="Difference between different bit-precision levels"
-  width="750" 
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 4. Different bit-precision levels example in code.</div>
+![Difference between different bit-precision levels](/images/writing/mixed-precision-code.png){width=750}
+**Figure 4. - Different bit-precision levels example in code.**
+
 
 The code examples above show that the lower the precision, the fewer accurate digits we see after the decimal point.
 
@@ -144,53 +125,24 @@ not significantly impact the model’s predictive performance, making the trade-
 You may notice that the loss may become unstable or not converge due to imprecision, numeric overflow, or underflow.
 
 
-- **FP32 (single precision) (32-bit floating point)**: The traditional 32-bit floating-point is numerically stable and forgiving. It's heavy on memory and computational resources, 
-twice as much as FP16, and rarely economical for large-scale inference. You'll see it used in training or for sensitive computations where numerical stability is paramount.
-It provides high numerical accuracy but requires more memory and computational resources.
+- **FP32 (single precision) (32-bit floating point)**: The traditional 32-bit floating-point is numerically stable and forgiving. It's heavy on memory and computational resources, twice as much as FP16, and rarely economical for large-scale inference. You'll see it used in training or for sensitive computations where numerical stability is paramount. It provides high numerical accuracy but requires more memory and computational resources.
 
+- **FP16 (half precision) (16-bit floating point)**: This format reduces memory usage and speeds up computations by using half the number of bits compared to FP32. The exponent is narrower than bf16, which means less dynamic range; that can bite on "spiky" activations unless you mix in higher-precision accumulations. In practice, fp16 is a strong baseline for quality-first inference when your stack is turned for it. It provides a good balance between memory efficiency and computational speed, making it suitable for `mixed-precision` training and inference. However, it may introduce numerical instability in some cases.
 
-- **FP16 (half precision) (16-bit floating point)**: This format reduces memory usage and speeds up computations by using half the number of bits compared to FP32. 
-The exponent is narrower than bf16, which means less dynamic range; that can bite on "spiky" activations unless you mix in higher-precision accumulations. 
-In practice, fp16 is a strong baseline for quality-first inference when your stack is turned for it. It provides a good balance between memory efficiency and computational speed, 
-making it suitable for `mixed-precision` training and inference. However, it may introduce numerical instability in some cases.
+- **BF16 (brain floating point) (bfloat16)**: This format is similar to FP16 but has a larger exponent range, making it more suitable for training large language models. It provides a good balance between memory efficiency and numerical stability. bf16 preserves fp32's wider exponent field but trims the mantissa, so you keep dynamic range while saving memory. That's why many teams find bf16 a bit more stable than fp16 on volatile activations, especially in training or mixed-precision inference. 
 
+- **int8 (8-bit integer quantization) (8-bit integer)**: It is often referred to as the workhorse for production inference. This format is often used for quantized inference, where model weights and activations are represented using 8-bit integers. It significantly reduces memory usage and can speed up inference, but it may lead to a loss of accuracy.
 
-- **BF16 (brain floating point) (bfloat16)**: This format is similar to FP16 but has a larger exponent range, making it more suitable for training large language models. 
-It provides a good balance between memory efficiency and numerical stability. bf16 preserves fp32's wider exponent field but trims the mantissa, so you keep dynamic range while
-saving memory. That's why many teams find bf16 a bit more stable than fp16 on volatile activations, especially in training or mixed-precision inference. 
-
-
-- **int8 (8-bit integer quantization) (8-bit integer)**: It is often referred to as the workhorse for production inference. This format is often used for quantized inference, where model weights and 
-activations are represented using 8-bit integers. It significantly reduces memory usage and can speed up inference, but it may lead to a loss of accuracy.
-
-
-- **fp8 (8-bit floating point)**: This format is an emerging precision format that uses 8 bits to represent floating-point numbers. It is designed to provide a balance between 
-memory efficiency and numerical accuracy, making it suitable for advanced training and inference scenarios. **E4M3** allocates 1 sign bit, 4 exponent bits, 
-and 3 mantissa bits, providing higher precision but a smaller dynamic range. **E5M2** uses 1 sign bit, 5 exponent bits, and 2 mantissa bits, providing greater 
-dynamic range but lower precision. E4M3 is commonly suited to weights and activations, while E5M2 is often used for gradients. Overall, FP8 offers significant memory, 
-bandwidth, and computational savings compared with FP16/BF16, at the cost of reduced numerical precision.
+- **fp8 (8-bit floating point)**: This format is an emerging precision format that uses 8 bits to represent floating-point numbers. It is designed to provide a balance between memory efficiency and numerical accuracy, making it suitable for advanced training and inference scenarios. **E4M3** allocates 1 sign bit, 4 exponent bits, and 3 mantissa bits, providing higher precision but a smaller dynamic range. **E5M2** uses 1 sign bit, 5 exponent bits, and 2 mantissa bits, providing greater dynamic range but lower precision. E4M3 is commonly suited to weights and activations, while E5M2 is often used for gradients. Overall, FP8 offers significant memory, bandwidth, and computational savings compared with FP16/BF16, at the cost of reduced numerical precision.
   
-
-- **int4 / 3-bit (ultra-low bit)**: This format is an **ultra-low-bit quantization formats** that uses 4 bits (or even 3 bits) to represent model weights and activations, 
-dramatically reducing memory footprint and bandwidth compared with FP16/BF16. **INT4** provides 16 possible values, while **3-bit** provides only 8, requiring more aggressive
-quantization. They are primarily used for quantized **LLM inference**, where the goal is to minimize memory usage and computational requirements. Techniques such as GPTQ, AWQ, and SmoothQuant help preserve model accuracy in these scenarios.
-The main trade-off is **lower numerical precision and potential accuracy degradation** in exchange for much smaller models, faster memory-bound inference, 
-and the ability to run larger models on limited hardware.
+- **int4 / 3-bit (ultra-low bit)**: This format is an **ultra-low-bit quantization formats** that uses 4 bits (or even 3 bits) to represent model weights and activations, dramatically reducing memory footprint and bandwidth compared with FP16/BF16. **INT4** provides 16 possible values, while **3-bit** provides only 8, requiring more aggressive quantization. They are primarily used for quantized **LLM inference**, where the goal is to minimize memory usage and computational requirements. Techniques such as GPTQ, AWQ, and SmoothQuant help preserve model accuracy in these scenarios. The main trade-off is **lower numerical precision and potential accuracy degradation** in exchange for much smaller models, faster memory-bound inference, and the ability to run larger models on limited hardware.
 
 
-Here are some numerical properties of the different precision types [torch.finfo](<https://docs.pytorch.org/docs/2.13/type_info.html>) as shown below:
+Here are some numerical properties of the different precision types [torch.finfo](https://docs.pytorch.org/docs/2.13/type_info.html) as shown below:
 
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/numerical-properties-bit-precision.png" 
-  alt="Numerical Properties of bit-precision"
-  width="750"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 5. Numerical properties of bit-precision.</div>
-
-
----
+![Numerical Properties of bit-precision](/images/writing/numerical-properties-bit-precision.png){width=750}
+**Figure 5. - Numerical properties of bit-precision.**
 
 
 ## Mixed-Precision Training Mechanics
@@ -199,13 +151,8 @@ It is referred to as `mixed-` rather than `low-`precision training because we do
 and 16-bit operations during training, hence, the term `mixed` precision.
 
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/mixed-precision-training-workflow.png" 
-  alt="Mixed-precision training workflow"
-  width="750"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 6. Mixed-precision training workflow.</div>
+![Mixed-precision training workflow](/images/writing/mixed-precision-training-workflow.png){width=750}
+**Figure 6. - Mixed-precision training workflow.**
 
 
 As shown in the figure above, **mixed-precision training** uses FP16 weights for the forward pass and backpropagation to improve computational efficiency and reduce memory usage. 
@@ -216,8 +163,7 @@ The FP32 gradients are then used to update the **FP32 master weights**, which ar
 This strategy allows for efficient training while maintaining the accuracy and stability of the neural network. The steps are as follows;
 
 
-- **Forward Pass:** The model uses **FP16 weights and activations** to perform matrix multiplications efficiently, reducing GPU memory usage and increasing throughput. 
-The loss is generally computed in **FP32** for better numerical stability.
+- **Forward Pass:** The model uses **FP16 weights and activations** to perform matrix multiplications efficiently, reducing GPU memory usage and increasing throughput. The loss is generally computed in **FP32** for better numerical stability.
 
 - **Loss Scaling:** The FP32 loss is multiplied by a large **scaling factor**. This prevents very small gradients from becoming zero due to FP16's limited numerical range.
 
@@ -240,85 +186,69 @@ The procedure above sounds quite complicated, but in practice, it's pretty easy 
 
 Here is the code for finetuning a `DistilBERT` model in regular fashion with float32 bit precision which is the default in PyTorch:
 
-{/* ![Finetuning a DistilBert model with FP32 bit-precision](/Users/user/Projects/basillians.github.io/images/writings/mixed-precision-finetuning-32-regular.png) */}
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/mixed-precision-finetuning-32-regular.png" 
-  alt="Finetuning a DistilBert model with FP32 bit-precision"
-  width="750"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 7. Finetuning a DistilBert model with FP32 bit-precision</div>
+
+![Finetuning a DistilBert model with FP32 bit-precision](/images/writing/mixed-precision-finetuning-32-regular.png){width=750}
+**Figure 7. - Finetuning a DistilBert model with FP32 bit-precision.**
+
 
 The results from training on an Apple Silicon (M1/M2/M3/M4) are as follows:
 
-{/* ![32-bit precision training](/Users/user/Projects/basillians.github.io/images/writings/32-bit-training.png) */}
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/32-bit-training.png" 
-  alt="32-bit precision training"
-  width="750"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 8. 32-bit precision training</div>
 
-Now, to compare it to `float16 mixed-precision` training, we only have to change one line of code, from
+![From 32-Bit to 16-Bit Precision](/images/writing/32-bit-training.png){width=750}
+**Figure 8. - 32-bit precision training.**
 
-**Change this to latest training output**
+
+
+Now, to compare it to `float16 mixed-precision` training, we only have to change one line of code, from;
+
 ```bash
 fabric = Fabric(accelerator="mps", devices=1)
 ```
 
 to
 
-**Change this to latest training output**
+
 ```bash
 fabric = Fabric(accelerator="mps", devices=1, precision="16-mixed")
 ```
 
 The results are as follows:
 
-{/* ![16-bit mixed-precision training](/Users/user/Projects/basillians.github.io/images/writings/16-mixed-precision-training.png) */}
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/16-mixed-precision-training.png" 
-  alt="16-bit mixed-precision training"
-  width="750"
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto",}} 
-/>
-<div align="center">Fig 9. 16-bit mixed-precision training</div>
+
+![16-bit mixed-precision training](/images/writing/16-mixed-precision-training.png){width=750}
+**Figure 9. - 16-bit mixed-precision training.**
 
 
-Above, we can see that the required memory reduced, likely as a consequence of carrying out the matrix multiplications in 16-bit precision. 
-Furthermore, the training speed also improved, which is huge.
+Above, we can see that the required memory reduced, likely as a consequence of carrying out the matrix multiplications in 16-bit precision. Furthermore, the training speed also improved, which is huge.
 
 An interesting, unexpected observation is that the Training accuracy improved as well. A likely explanation is that this is due to regularizing effects of using a lower precision. 
 Lower precision may introduce some level of noise in the training process, which can help the model generalize better and reduce overfitting, potentially leading to higher 
 accuracy.
 
 
----
+
 
 ## Precision vs Quantization
 
-**Precision** refers to the number of bits used to represent numerical values during computation, such as **FP32, FP16, BF16, FP8, INT8, or INT4**. 
-Lower precision reduces memory usage and can increase computational throughput, while potentially introducing numerical errors.
+- **Precision** refers to the number of bits used to represent numerical values during computation, such as **FP32, FP16, BF16, FP8, INT8, or INT4**. Lower precision reduces memory usage and can increase computational throughput, while potentially introducing numerical errors.
 
-**Quantization** on the otherhand is the **process of converting values from a higher-precision representation to a lower-precision representation**, usually by 
-mapping continuous values to a smaller set of discrete values. If we want to increase the model performance during inference even more, we can also move beyond 
-lower floating point precision and use quantization. It converts the model weights from floats to low-bit integer representations, 
-for example, 8-bit integers (and, recently, even 4-bit integers).
+- **Quantization** on the otherhand is the **process of converting values from a higher-precision representation to a lower-precision representation**, usually by mapping continuous values to a smaller set of discrete values. If we want to increase the model performance during inference even more, we can also move beyond lower floating point precision and use quantization. It converts the model weights from floats to low-bit integer representations, for example, 8-bit integers (and, recently, even 4-bit integers).
 
 
-|                  | Precision                | Quantization                   |
-| ---------------- | ------------------------ | ------------------------------ |
-| **What?**        | Numerical representation | Conversion/compression process |
-| **Examples**     | FP32 → FP16 → FP8        | FP16 → INT8 → INT4             |
-| **Primary goal** | Efficient computation    | Reduce model size/memory       |
-| **Typical use**  | Training & inference     | Mostly inference               |
-| **Main concern** | Numerical stability      | Quantization error             |
+
+|                      | Precision                | Quantization                   |
+| -------------------- | ------------------------ | ------------------------------ |
+|     **What?**        | Numerical representation | Conversion/compression process |
+|     **Examples**     | FP32 → FP16 → FP8        | FP16 → INT8 → INT4             |
+|     **Primary goal** | Efficient computation    | Reduce model size/memory       |
+|     **Typical use**  | Training & inference     | Mostly inference               |
+|     **Main concern** | Numerical stability      | Quantization error             |
 
 
-### Simple distinction
 
-```text
+**Simple distinction**
+
+```
 Precision = How many bits represent a value?
 
 Quantization = How do we convert values into a lower-bit representation?
@@ -327,7 +257,7 @@ Quantization = How do we convert values into a lower-bit representation?
 For example, converting an LLM's **FP16 weights to INT4** is **quantization**, while INT4 itself is a **4-bit precision/representation format**.
 
 
----
+
 
 
 ## Benefits of Mixed-Precision Training in LLMs
@@ -350,20 +280,20 @@ therefore faster training.
 
 
 
-```text
+```
                                     Mixed Precision
                                           │
-     ┌────────────┬────────────────┼──────────────┬───────────────┬──────────────────┐
-     ▼            ▼                ▼              ▼               ▼                  ▼
-  ↓ Memory   ↑ Throughput    ↑ Batch Size   ↓ Bandwidth Cost  ↓ Training   ↑ Hardware Utilization
-                                                
+     ┌──────────────┬───────────────┬──────────────┬───────────────┬────────────────────┐
+     ▼            ▼              ▼             ▼              ▼                  ▼
+  ↓ Memory     ↑ Throughput   ↑ Batch Size    ↓ Bandwidth      ↓ Training        ↑ Hardware 
+                                                 Cost                             Utilization
+
 ```
 
 
 The basic trade-off is **computational efficiency vs. numerical precision**: use lower precision where possible, and higher precision where necessary for stability.
 
 
----
 
 
 ## Challenges of Mixed-Precision Training in LLMs
@@ -386,19 +316,12 @@ Mixed-precision is so fundamental to training LLM using multiple numerical perci
 
 **Core trade-off:**
 
-<img 
-  src="/Users/user/Projects/basillians.github.io/images/writings/core-tradeoff.png" 
-  alt="Core trade-off" 
-  width="300" 
-  style={{ maxWidth: "100%", height: "auto", margin: "0 auto"}} 
-/>
-<div align="center">Fig 10. Core trade-off of mixed-precision</div>
+![Core trade-off](/images/writing/core-tradeoff.png){width=750}
+**Figure 10. - Core trade-off of mixed-precision.**
+
 
 The goal is therefore **not to use the lowest precision everywhere**, but to use the lowest precision that maintains stable training and acceptable model quality.
 
-
-
----
 
 
 ## Best Practices for Optimal Performance in Mixed-Precision Training
@@ -417,6 +340,7 @@ BF16
 ├── 8 exponent bits
 └── 7 mantissa bits
 ```
+
 This generally makes BF16 easier to train with than FP16, particularly for large models.
 
 
@@ -424,27 +348,27 @@ This generally makes BF16 easier to train with than FP16, particularly for large
 
 Use `FP16/BF16/FP8` to compute-intensive operations that benefit from Tensor Cores:
 
-
+```
 - Matrix Multiplication
 - Attention
 - Linear Layers
 - Convolutions
-
+```
 
 while retaining higher precision for numerically sensitive operations such as:
 
-
+```
 - reductions
 - loss calculations
 - optimizer states
-
+```
 
 
 3. **Use loss scaling when appropriate:**
 
 Apply **dynamic loss scaling** for FP16 to prevent gradient underflow, and use appropriate activation/gradient scaling strategies when training with FP8.
 
-```text
+```
 Loss
  ↓
 × scaling factor
@@ -466,12 +390,14 @@ BF16 generally does not require loss scaling because of its much larger exponent
 
 Everything should not be blindly converted to low precision. Some operations that may benefit from higher precision include:
 
+```
 - Loss computation
 - Certain normalization operations
 - Reductions
 - Optimizer states
 - Accumulation
 - Some softmax/logarithmic operations
+```
 
 The exact choices depend on the architecture and framework. 
 
@@ -482,12 +408,14 @@ Mixed precision reduces the size of tensors, but data movement can still become 
 
 Attention should be paid to:
 
+```
 - GPU memory bandwidth
 - Host-to-device transfers
 - Activation memory
 - Kernel launches
 - Tensor layout
 - Communication between GPUs
+```
 
 For distributed LLM training, this becomes especially important.
 
@@ -497,7 +425,7 @@ For distributed LLM training, this becomes especially important.
 
 Pair mixed precision alongside:
 
-
+```
 - Gradient checkpointing
 - Gradient accumulation
 - FlashAttention
@@ -505,11 +433,11 @@ Pair mixed precision alongside:
 - ZeRO
 - FSDP
 - Efficient optimizer implementations
-
+```
 
 For example:
 
-```
+```md
 Mixed Precision
       +
 FlashAttention
@@ -528,14 +456,14 @@ These helps to improve memory efficiency and overall throughput.
 
 Track:
 
-
+```
 - Loss
 - Gradient norms
 - Activation ranges
 - NaN / Inf occurrences
 - Overflow / underflow
 - Training convergence
-
+```
 
 If training suddenly produces `loss = Nan`, investigate numerical instability before simply changing the learning rate or architecture.
 
@@ -547,7 +475,7 @@ A precision change is useful only if it actually improves the training workload.
 
 Measure:
 
-
+```
 - Tokens / second
 - GPU utilization
 - Memory consumption
@@ -555,17 +483,22 @@ Measure:
 - Communication overhead
 - Training cost
 - Final model quality
-
+```
 
 For example:
+
 ```
+FP32:
+- 60k tokens/sec
+- 140 GB GPU memory
+
 BF16:
-120k tokens/sec
-70 GB GPU memory
+- 120k tokens/sec
+- 70 GB GPU memory
 
 FP8:
-180k tokens/sec
-52 GB GPU memory
+- 180k tokens/sec
+- 52 GB GPU memory
 ```
 
 FP8 looks better—but you must also verify that convergence and final model quality remain acceptable.
@@ -573,9 +506,17 @@ FP8 looks better—but you must also verify that convergence and final model qua
 
 ## References
 
-- [Accelerating Large Language Models with Mixed-Precision Techniques](https://sebastianraschka.com/blog/2023/llm-mixed-precision-copy.html)
-- [From Precision to Quantization: A Practical Guide to Faster, Cheaper LLMs](https://deepinfra.com/blog/precision-to-quantization-faster-cheaper-llms)
-- [Optimizing LLM Accuracy](https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy)
-- [MIXED PRECISION TRAINING](https://arxiv.org/pdf/1710.03740) - Sharan Narang∗, Gregory Diamos, Erich Elsen† et al., 2018
-- [Data Types and Precision (FP16, INT8)](https://apxml.com/courses/llm-model-sizes-hardware/chapter-3-model-size-hardware-connection/data-types-precision)
-- [Video Series: Mixed-Precision Training Techniques Using Tensor Cores for Deep Learning](https://developer.nvidia.com/blog/video-mixed-precision-techniques-tensor-cores-deep-learning/)
+[1] [Accelerating Large Language Models with Mixed-Precision Techniques](https://sebastianraschka.com/blog/2023/llm-mixed-precision-copy.html)
+
+[2] [From Precision to Quantization: A Practical Guide to Faster, Cheaper LLMs](https://deepinfra.com/blog/precision-to-quantization-faster-cheaper-llms)
+
+[3] [Optimizing LLM Accuracy](https://developers.openai.com/api/docs/guides/optimizing-llm-accuracy)
+
+[4] [MIXED PRECISION TRAINING](https://arxiv.org/pdf/1710.03740) - Sharan Narang∗, Gregory Diamos, Erich Elsen† et al., 2018
+
+[5] [Data Types and Precision (FP16, INT8)](https://apxml.com/courses/llm-model-sizes-hardware/chapter-3-model-size-hardware-connection/data-types-precision)
+
+[6] [Video Series: Mixed-Precision Training Techniques Using Tensor Cores for Deep Learning](https://developer.nvidia.com/blog/video-mixed-precision-techniques-tensor-cores-deep-learning/)
+
+
+
