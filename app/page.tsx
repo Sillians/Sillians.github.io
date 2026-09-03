@@ -41,10 +41,10 @@ export default function Home() {
             </div>
           </Reveal>
           <div className="capability-strip" aria-label="Core capabilities">
-            <div><strong>01</strong><span>Model systems</span></div>
-            <div><strong>02</strong><span>ML platforms</span></div>
-            <div><strong>03</strong><span>Research → production</span></div>
-            <div><strong>04</strong><span>Evaluation & reliability</span></div>
+            <div data-accent="sage"><span>Model systems</span></div>
+            <div data-accent="clay"><span>ML platforms</span></div>
+            <div data-accent="sage"><span>Research → production</span></div>
+            <div data-accent="clay"><span>Evaluation & reliability</span></div>
           </div>
         </section>
 
