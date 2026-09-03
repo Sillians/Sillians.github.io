@@ -1,11 +1,12 @@
 import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
     <footer>
       <div className="shell footer-inner">
         <div className="footer-signature">
-          <strong>Basil Ihuoma</strong>
+          <strong><Link className="footer-brand" href="/">Basil Ihuoma</Link></strong>
           <p>Building AI systems that survive contact with production.</p>
         </div>
         <div className="footer-links">
