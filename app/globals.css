@@ -80,8 +80,8 @@ a { color: inherit; text-decoration: none; }
 .section-heading h2 { margin: 0; font-size: 42px; letter-spacing: -.05em; font-weight: 580; }
 .section-heading > a { display: inline-flex; align-items: center; gap: 7px; padding-bottom: 5px; font-size: 13px; border-bottom: 1px solid var(--ink); }
 .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-.project-card { min-height: 410px; background: #ebe9e1; border: 1px solid var(--line); padding: 30px; display: flex; flex-direction: column; transition: transform .25s, background .25s; }
-.project-card:hover { transform: translateY(-3px); background: #eeece5; border-color: var(--ink); }
+.project-card { min-height: 410px; background: #ebe9e1; border: 1px solid var(--line); padding: 30px; display: flex; flex-direction: column; transition: transform .25s, border-color .25s; }
+.project-card:hover { transform: translateY(-3px); border-color: var(--ink); }
 .project-card:nth-child(3) { grid-column: 1 / -1; min-height: 340px; }
 .card-top { display: flex; justify-content: space-between; align-items: center; }
 .card-number, .meta, .tag { font: 500 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
