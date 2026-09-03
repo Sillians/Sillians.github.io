@@ -26,7 +26,7 @@ export default async function DetailPage({ params }: { params: Promise<{ type: s
       <SiteHeader />
       <main className={hasContents ? "article-page shell" : "article shell"}>
         {hasContents && <ArticleContents items={contents} />}
-        <div className={hasContents ? "article article-main" : "article-main"}>
+        <div className={`${hasContents ? "article " : ""}article-main article-type-${type}`}>
           <a className="back" href={`/${type}`}>← Back to {type}</a>
           <header className="article-header">
             <span className="section-index">{type} / {item.date}</span>

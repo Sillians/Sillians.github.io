@@ -222,6 +222,17 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   letter-spacing: -.03em;
 }
 
+/* Content-type accents: deliberately low-saturation to preserve the ink-and-paper palette. */
+.article-type-projects { --article-accent: #315a66; }
+.article-type-research { --article-accent: #536849; }
+.article-type-writing { --article-accent: #815642; }
+.article-type-projects .article-body h2,
+.article-type-projects .article-body h3,
+.article-type-research .article-body h2,
+.article-type-research .article-body h3,
+.article-type-writing .article-body h2,
+.article-type-writing .article-body h3 { color: var(--article-accent); }
+
 @media (max-width: 900px) {
   .article-page { display: block; }
   .article-page .article { padding-top: 54px; }
