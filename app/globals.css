@@ -122,6 +122,11 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
 .index-page h1 { margin: 18px 0 18px; font-size: clamp(54px, 7vw, 88px); letter-spacing: -.065em; line-height: .95; }
 .index-intro { max-width: 650px; color: var(--muted); font-size: 19px; line-height: 1.6; margin-bottom: 70px; }
 .index-list { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.writing-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: -30px 0 42px; }
+.writing-filter { padding: 8px 11px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font: 500 11px var(--font-mono); letter-spacing: .03em; transition: border-color .18s ease, color .18s ease, background .18s ease; }
+.writing-filter:hover, .writing-filter:focus-visible { border-color: var(--ink); color: var(--ink); outline: none; }
+.writing-filter[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.writing-empty { margin: 0; color: var(--muted); }
 
 .topic-map { margin-top: 10px; padding-top: 34px; border-top: 1px solid var(--ink); }
 .research-section-label { display: grid; grid-template-columns: 180px 1fr; gap: 30px; margin-bottom: 42px; }

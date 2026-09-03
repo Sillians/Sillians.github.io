@@ -2,8 +2,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ContentItem } from "@/lib/content";
 
+export type ContentCardItem = Pick<ContentItem, "type" | "slug" | "title" | "description" | "date" | "year" | "tags">;
+
 export function ContentCard({ item, index = 0, compact = false }: {
-  item: ContentItem; index?: number; featured?: boolean; compact?: boolean;
+  item: ContentCardItem; index?: number; featured?: boolean; compact?: boolean;
 }) {
   const href = `/${item.type}/${item.slug}`;
   if (compact) {

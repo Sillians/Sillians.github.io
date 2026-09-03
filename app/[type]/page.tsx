@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { ContentCard } from "@/components/content-card";
+import { ContentCard, type ContentCardItem } from "@/components/content-card";
 import { SiteHeader } from "@/components/site-header";
 import { ResearchIndex } from "@/components/research-index";
-import { ContentType, getAllContent } from "@/lib/content";
+import { WritingIndex } from "@/components/writing-index";
+import { ContentItem, ContentType, getAllContent } from "@/lib/content";
 
 const labels: Record<ContentType, { title: string; intro: string }> = {
   projects: { title: "Projects", intro: "Production-minded AI systems: the architecture, decisions, tradeoffs, and measurable outcomes behind what I build." },
@@ -11,6 +12,18 @@ const labels: Record<ContentType, { title: string; intro: string }> = {
 };
 
 export const dynamicParams = false;
+
+function toContentCardItem(item: ContentItem): ContentCardItem {
+  return {
+    type: item.type,
+    slug: item.slug,
+    title: item.title,
+    description: item.description,
+    date: item.date,
+    year: item.year,
+    tags: item.tags,
+  };
+}
 
 export function generateStaticParams() {
   return Object.keys(labels).map((type) => ({ type }));
@@ -30,6 +43,8 @@ export default async function IndexPage({ params }: { params: Promise<{ type: st
         <p className="index-intro">{label.intro}</p>
         {type === "research" ? (
           <ResearchIndex items={items} />
+        ) : type === "writing" ? (
+          <WritingIndex items={items.map(toContentCardItem)} />
         ) : (
           <div className="index-list">
             {items.map((item, index) => <ContentCard item={item} index={index} featured key={item.slug} />)}
