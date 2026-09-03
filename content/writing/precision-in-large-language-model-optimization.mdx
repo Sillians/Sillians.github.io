@@ -505,6 +505,23 @@ FP8:
 FP8 looks better—but you must also verify that convergence and final model quality remain acceptable.
 
 
+## Conclusion
+
+Mixed precision is not simply a way to make LLM training cheaper. It is a systems decision about where numerical accuracy matters most. 
+By running high-throughput operations such as matrix multiplications and attention in `FP16`, `BF16`, or `FP8`, while retaining `FP32` for 
+sensitive operations such as loss computation, reductions, optimizer states, and master weights, teams can reduce memory pressure and increase 
+throughput without treating model quality as an afterthought.
+
+The right choice is workload-dependent. `BF16` is often the most practical default on modern hardware because of its wider dynamic range; 
+`FP16` can deliver strong gains when paired with loss scaling; `FP8` offers further efficiency when the hardware, kernels, and validation process are mature. 
+Quantization extends these ideas into inference, where reducing model size and memory bandwidth can make larger models deployable under tighter constraints.
+
+The important principle is simple: do not use the lowest precision everywhere, use the lowest precision that preserves stable training and acceptable quality. 
+Measure memory, throughput, convergence, numerical failures, latency, cost, and final task performance together. 
+When mixed precision is combined with techniques such as `FlashAttention`, `gradient checkpointing`, `fused kernels`, and `distributed-training` strategies, 
+it becomes one of the most effective levers for turning an expensive LLM workload into a scalable production system.
+
+
 
 ## **References**
 
