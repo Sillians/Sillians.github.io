@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Rss } from "lucide-react";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -15,6 +15,9 @@ export function SiteFooter() {
           </a>
           <a href="mailto:ihuomacbasil@gmail.com">
             Email <ArrowUpRight aria-hidden="true" size={13} />
+          </a>
+          <a href="/rss.xml">
+            RSS <Rss aria-hidden="true" size={13} />
           </a>
           <a href="https://x.com/silbux120824" target="_blank" rel="noreferrer">
             X <ArrowUpRight aria-hidden="true" size={13} />

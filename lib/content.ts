@@ -22,6 +22,8 @@ export type ContentItem = {
   topic?: string;
   subtopic?: string;
   paper?: string;
+  series?: string;
+  part?: number;
   cover?: string;
   coverAlt?: string;
   body: string;
@@ -66,6 +68,8 @@ function parseFile(filePath: string, raw: string): ContentItem {
     topic: data.topic,
     subtopic: data.subtopic,
     paper: data.paper,
+    series: data.series,
+    part: data.part && Number.isFinite(Number(data.part)) ? Number(data.part) : undefined,
     cover: data.cover,
     coverAlt: data.coverAlt,
     body,
@@ -89,6 +93,27 @@ export function getAllContent(type?: ContentType) {
 
 export function getContent(type: ContentType, slug: string) {
   return getAllContent(type).find((item) => item.slug === slug);
+}
+
+export function getSeriesItems(item: ContentItem) {
+  if (!item.series) return [];
+  return getAllContent(item.type)
+    .filter((candidate) => candidate.series === item.series)
+    .sort((a, b) => (a.part || Number.MAX_SAFE_INTEGER) - (b.part || Number.MAX_SAFE_INTEGER) || a.date.localeCompare(b.date));
+}
+
+export function getRelatedContent(item: ContentItem, limit = 3) {
+  const itemTags = new Set(item.tags.map((tag) => tag.toLowerCase()));
+  return getAllContent(item.type)
+    .filter((candidate) => candidate.slug !== item.slug)
+    .map((candidate) => ({
+      candidate,
+      score: candidate.tags.reduce((total, tag) => total + Number(itemTags.has(tag.toLowerCase())), 0),
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || b.candidate.date.localeCompare(a.candidate.date))
+    .slice(0, limit)
+    .map(({ candidate }) => candidate);
 }
 
 function plainHeadingText(text: string) {

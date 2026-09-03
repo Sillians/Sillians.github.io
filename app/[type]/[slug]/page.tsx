@@ -2,8 +2,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArticleContents } from "@/components/article-contents";
 import { Comments } from "@/components/comments";
+import { RelatedReading } from "@/components/related-reading";
+import { SeriesNavigation } from "@/components/series-navigation";
 import { SiteHeader } from "@/components/site-header";
-import { ContentType, getAllContent, getContent, getTableOfContents, renderMarkdown } from "@/lib/content";
+import { ContentType, getAllContent, getContent, getRelatedContent, getSeriesItems, getTableOfContents, renderMarkdown } from "@/lib/content";
 
 export const dynamicParams = false;
 
@@ -21,6 +23,8 @@ export default async function DetailPage({ params }: { params: Promise<{ type: s
   const contentSupportsContents = type === "research" || type === "writing";
   const contents = contentSupportsContents ? getTableOfContents(item.body) : [];
   const hasContents = contents.length > 0;
+  const seriesItems = getSeriesItems(item);
+  const relatedItems = contentSupportsContents ? getRelatedContent(item) : [];
   return (
     <>
       <SiteHeader />
@@ -45,6 +49,8 @@ export default async function DetailPage({ params }: { params: Promise<{ type: s
             />
           )}
           <article className="article-body" dangerouslySetInnerHTML={{ __html: renderMarkdown(item.body) }} />
+          <SeriesNavigation item={item} items={seriesItems} />
+          <RelatedReading items={relatedItems} />
           <Comments />
         </div>
       </main>
