@@ -273,6 +273,11 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   margin: 0 0 24px;
   padding-left: 28px;
 }
+.article-body ul { list-style-type: disc; }
+.article-body ol { list-style-type: decimal; }
+.article-body ul ul { list-style-type: circle; }
+.article-body ul ul ul { list-style-type: square; }
+.article-body ol ol { list-style-type: lower-alpha; }
 
 .article-body li {
   margin: 6px 0;

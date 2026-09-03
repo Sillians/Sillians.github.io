@@ -176,6 +176,57 @@ function rehypeExternalLinks() {
   };
 }
 
+function rehypeFigureCaptions() {
+  return (tree: HtmlNode) => {
+    const figure = (image: HtmlNode, caption: HtmlNode): HtmlNode => ({
+      type: "element",
+      tagName: "figure",
+      properties: { className: ["article-image"] },
+      children: [
+        image,
+        { type: "element", tagName: "figcaption", properties: {}, children: [caption] },
+      ],
+    });
+    const visit = (node: HtmlNode) => {
+      if (!node.children) return;
+
+      for (let index = 0; index < node.children.length; index += 1) {
+        const imageParagraph = node.children[index];
+        const captionParagraph = node.children[index + 1];
+        const inlineNodes = imageParagraph.tagName === "p"
+          ? imageParagraph.children?.filter((child) => child.type !== "text" || child.value?.trim())
+          : undefined;
+        const inlineImage = inlineNodes?.find((child) => child.tagName === "img");
+        const inlineCaption = inlineNodes?.find((child) => child !== inlineImage && /^figure\s+\d+\s*[.:-]/i.test(textFromNode(child).trim()));
+
+        if (inlineNodes?.length === 2 && inlineImage && inlineCaption) {
+          node.children.splice(index, 1, figure(inlineImage, inlineCaption));
+          continue;
+        }
+        if (!captionParagraph) continue;
+
+        const imageChildren = imageParagraph.tagName === "p"
+          ? imageParagraph.children?.filter((child) => child.type !== "text" || child.value?.trim())
+          : undefined;
+        const image = imageChildren?.length === 1 ? imageChildren[0] : undefined;
+        const caption = textFromNode(captionParagraph).trim();
+
+        if (image?.tagName !== "img" || captionParagraph.tagName !== "p" || !/^figure\s+\d+\s*[.:-]/i.test(caption)) continue;
+
+        node.children.splice(index, 2, figure(image, {
+          type: "element",
+          tagName: "span",
+          properties: {},
+          children: captionParagraph.children || [],
+        }));
+      }
+
+      node.children.forEach(visit);
+    };
+    visit(tree);
+  };
+}
+
 function imageDimension(value: string) {
   const normalized = value.trim();
   return /^\d+(?:\.\d+)?(?:px|%|rem|em|vw|vh)?$/.test(normalized) ? normalized : undefined;
@@ -221,6 +272,7 @@ export function renderMarkdown(markdown: string) {
       .use(rehypeKatex)
       .use(rehypeArticleHeadingIds)
       .use(rehypeExternalLinks)
+      .use(rehypeFigureCaptions)
       .use(rehypeStringify)
       .processSync(markdown),
   );
