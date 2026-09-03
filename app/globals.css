@@ -127,6 +127,7 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
 .writing-filter:hover, .writing-filter:focus-visible { border-color: var(--ink); color: var(--ink); outline: none; }
 .writing-filter[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .writing-empty { margin: 0; color: var(--muted); }
+.writing-library .card-summary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .topic-map { margin-top: 10px; padding-top: 34px; border-top: 1px solid var(--ink); }
 .research-section-label { display: grid; grid-template-columns: 180px 1fr; gap: 30px; margin-bottom: 42px; }

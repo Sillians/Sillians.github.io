@@ -21,7 +21,7 @@ export function ContentCard({ item, index = 0, compact = false }: {
     <Link className="project-card" href={href}>
       <div className="card-top"><span className="card-number">0{index + 1} / {item.year}</span><ArrowUpRight className="card-arrow" aria-hidden="true" size={22} strokeWidth={1.6} /></div>
       <h3>{item.title}</h3>
-      <p>{item.description}</p>
+      <p className="card-summary" title={item.description}>{item.description}</p>
       <div className="tags">{item.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
     </Link>
   );
