@@ -135,6 +135,13 @@ type HtmlNode = {
   children?: HtmlNode[];
 };
 
+type MarkdownNode = {
+  type?: string;
+  value?: string;
+  data?: { hProperties?: Record<string, unknown> };
+  children?: MarkdownNode[];
+};
+
 function textFromNode(node: HtmlNode): string {
   if (node.type === "text") return node.value || "";
   return node.children?.map(textFromNode).join("") || "";
@@ -169,9 +176,39 @@ function rehypeExternalLinks() {
   };
 }
 
-function normalizeMarkdown(markdown: string) {
-  // Older posts used an image-size suffix. Remove it so the underlying Markdown remains valid.
-  return markdown.replace(/(!\[[^\]]*\]\([^)]+\))\{[^}]*\}/g, "$1");
+function imageDimension(value: string) {
+  const normalized = value.trim();
+  return /^\d+(?:\.\d+)?(?:px|%|rem|em|vw|vh)?$/.test(normalized) ? normalized : undefined;
+}
+
+function remarkImageDimensions() {
+  return (tree: MarkdownNode) => {
+    const visit = (node: MarkdownNode) => {
+      if (node.children) {
+        for (let index = 0; index < node.children.length - 1; index += 1) {
+          const image = node.children[index];
+          const followingText = node.children[index + 1];
+          if (image.type !== "image" || followingText.type !== "text" || !followingText.value) continue;
+
+          const suffix = followingText.value.match(/^\{([^}]*)\}/);
+          if (!suffix) continue;
+
+          const dimensions: Record<string, string> = {};
+          const attributes = suffix[1].matchAll(/\b(width|height)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s}]+))/gi);
+          for (const attribute of attributes) {
+            const dimension = imageDimension(attribute[2] || attribute[3] || attribute[4] || "");
+            if (dimension) dimensions[attribute[1].toLowerCase()] = dimension;
+          }
+          if (!Object.keys(dimensions).length) continue;
+
+          image.data = { ...image.data, hProperties: { ...image.data?.hProperties, ...dimensions } };
+          followingText.value = followingText.value.slice(suffix[0].length);
+        }
+        node.children.forEach(visit);
+      }
+    };
+    visit(tree);
+  };
 }
 
 export function renderMarkdown(markdown: string) {
@@ -179,11 +216,12 @@ export function renderMarkdown(markdown: string) {
     remark()
       .use(remarkGfm)
       .use(remarkMath)
+      .use(remarkImageDimensions)
       .use(remarkRehype)
       .use(rehypeKatex)
       .use(rehypeArticleHeadingIds)
       .use(rehypeExternalLinks)
       .use(rehypeStringify)
-      .processSync(normalizeMarkdown(markdown)),
+      .processSync(markdown),
   );
 }
