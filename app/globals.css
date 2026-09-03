@@ -142,6 +142,34 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   max-width: 760px;
   padding: 70px 0 120px;
 }
+.article-page {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 760px);
+  justify-content: center;
+  gap: clamp(42px, 6vw, 92px);
+}
+.article-page .article { width: 100%; }
+.article-contents { padding-top: 148px; }
+.article-contents nav { position: sticky; top: 112px; }
+.article-contents p {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font: 650 10px var(--font-geist-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.article-contents ol { margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--line); }
+.article-contents li { margin: 0; padding: 0; }
+.article-contents a {
+  display: block;
+  padding: 7px 0 7px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  transition: color .15s, border-color .15s;
+}
+.article-contents a:hover { color: var(--ink); }
+.article-contents .toc-level-3 a { padding-left: 24px; font-size: 11px; }
 
 .back {
   font-size: 13px;
@@ -178,6 +206,7 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   line-height: 1.1;
   letter-spacing: -.04em;
 }
+.article-body h2, .article-body h3 { scroll-margin-top: 110px; }
 
 .article-body h2 {
   margin: 55px 0 16px;
@@ -191,6 +220,15 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   font-size: 23px;
   line-height: 1.25;
   letter-spacing: -.03em;
+}
+
+@media (max-width: 900px) {
+  .article-page { display: block; }
+  .article-page .article { padding-top: 54px; }
+  .article-contents { padding-top: 36px; }
+  .article-contents nav { position: static; padding: 18px; border: 1px solid var(--line); }
+  .article-contents ol { columns: 2; column-gap: 18px; }
+  .article-contents li { break-inside: avoid; }
 }
 
 /* Paragraphs */
@@ -489,6 +527,7 @@ footer { padding: 55px 0; color: var(--paper); background: var(--ink); border-to
   .proof-grid { gap: 55px; }
   .library { gap: 70px; }
   .footer-inner { grid-template-columns: 1fr; align-items: start; gap: 28px; }
+  .article-page .article { padding-top: 70px; }
   .cv-toolbar, .cv-header { align-items: flex-start; flex-direction: column; }
   .cv-actions { width: 100%; flex-direction: column; }
   .cv-actions .button { width: 100%; }

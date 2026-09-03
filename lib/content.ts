@@ -4,6 +4,11 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 
 export type ContentType = "projects" | "research" | "writing";
+export type TableOfContentsItem = {
+  id: string;
+  title: string;
+  level: 2 | 3;
+};
 export type ContentItem = {
   type: ContentType;
   slug: string;
@@ -99,7 +104,57 @@ export function getContent(type: ContentType, slug: string) {
   return getAllContent(type).find((item) => item.slug === slug);
 }
 
+function plainHeadingText(text: string) {
+  return text
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[\*_`]/g, "")
+    .trim();
+}
+
+function headingSlug(text: string) {
+  return plainHeadingText(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-") || "section";
+}
+
+export function getTableOfContents(markdown: string): TableOfContentsItem[] {
+  const items: TableOfContentsItem[] = [];
+  const ids = new Map<string, number>();
+  let inCodeBlock = false;
+
+  for (const line of markdown.split("\n")) {
+    if (line.trim().startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+    if (inCodeBlock) continue;
+
+    const match = line.match(/^(#{2,3})\s+(.+?)\s*#*\s*$/);
+    if (!match) continue;
+
+    const level = match[1].length as 2 | 3;
+    const title = plainHeadingText(match[2]);
+    const baseId = headingSlug(match[2]);
+    const occurrence = ids.get(baseId) || 0;
+    ids.set(baseId, occurrence + 1);
+
+    items.push({
+      id: occurrence ? `${baseId}-${occurrence + 1}` : baseId,
+      title,
+      level,
+    });
+  }
+
+  return items;
+}
+
 export function renderMarkdown(markdown: string) {
+  const headings = getTableOfContents(markdown);
+  let headingIndex = 0;
   const escaped = markdown
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -193,7 +248,8 @@ export function renderMarkdown(markdown: string) {
     // ----------------------------------------
 
     if (line.startsWith("### ")) {
-      output.push(`<h3>${formatInline(line.slice(4))}</h3>`);
+      const heading = headings[headingIndex++];
+      output.push(`<h3 id="${heading?.id ?? "section"}">${formatInline(line.slice(4))}</h3>`);
       i++;
       continue;
     }
@@ -203,7 +259,8 @@ export function renderMarkdown(markdown: string) {
     // ----------------------------------------
 
     if (line.startsWith("## ")) {
-      output.push(`<h2>${formatInline(line.slice(3))}</h2>`);
+      const heading = headings[headingIndex++];
+      output.push(`<h2 id="${heading?.id ?? "section"}">${formatInline(line.slice(3))}</h2>`);
       i++;
       continue;
     }
