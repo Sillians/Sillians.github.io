@@ -77,7 +77,7 @@ a { color: inherit; text-decoration: none; }
 
 .work, .library { padding: 120px 0; }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 42px; }
-.section-heading h2 { margin: 12px 0 0; font-size: 42px; letter-spacing: -.05em; font-weight: 580; }
+.section-heading h2 { margin: 0; font-size: 42px; letter-spacing: -.05em; font-weight: 580; }
 .section-heading > a { display: inline-flex; align-items: center; gap: 7px; padding-bottom: 5px; font-size: 13px; border-bottom: 1px solid var(--ink); }
 .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .project-card { min-height: 410px; background: #ebe9e1; border: 1px solid var(--line); padding: 30px; display: flex; flex-direction: column; transition: transform .25s, background .25s; }

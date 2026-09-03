@@ -51,7 +51,6 @@ export default function Home() {
         <section className="work shell" id="projects">
           <div className="section-heading">
             <div>
-              <span className="section-index">01 / PROJECTS</span>
               <h2>Selected systems</h2>
             </div>
             <Link href="/projects">View all projects <ArrowRight aria-hidden="true" size={14} /></Link>
@@ -80,7 +79,7 @@ export default function Home() {
         <section className="library shell">
           <div className="library-column">
             <div className="section-heading compact">
-              <div><span className="section-index">02 / RESEARCH</span><h2>Learning in public</h2></div>
+              <div><h2>Learning in public</h2></div>
               <Link href="/research">All <ArrowRight aria-hidden="true" size={14} /></Link>
             </div>
             <div className="list">
@@ -91,7 +90,7 @@ export default function Home() {
           </div>
           <div className="library-column">
             <div className="section-heading compact">
-              <div><span className="section-index">03 / WRITING</span><h2>Technical notes</h2></div>
+              <div><h2>Technical notes</h2></div>
               <Link href="/writing">All <ArrowRight aria-hidden="true" size={14} /></Link>
             </div>
             <div className="list">
