@@ -1,0 +1,36 @@
+---
+title: Reading notes: compound AI systems
+description: The Ultimate Guide to Fine-Tuning LLMs from Basics to Breakthroughs.
+date: 2026-02-14
+tags: AI Systems, Architecture, Research
+featured: true
+topic: AI Evaluation
+subtopic: Evaluating AI systems
+paper: Compound AI Systems
+---
+
+
+"The Ultimate Guide to Fine-Tuning LLMs from Basics to Breakthroughs" is a comprehensive technical paper available on arXiv. 
+It outlines a structured 7-stage lifecycle for adapting language models, moving from initial data preparation and environment 
+setup to parameter-efficient fine-tuning (PEFT), alignment, and production monitoring.
+
+Link: https://arxiv.org/html/2408.13296v1#abstract1
+
+
+**The Seven-Stage Fine-Tuning Pipeline**
+
+- Dataset preparation: Clean, format, and structure input-output text pairs.
+- Model initialization: Load pre-trained weights and select base architectures.
+- Environment setup: Configure hardware resources, libraries, and distributed clusters.
+- Fine-tuning: Apply full training or efficient adapter methods.
+- Evaluation & validation: Measure task accuracy and check for regressions.
+- Deployment: Serve the refined model on cloud or edge platforms.
+- Monitoring: Track live performance drift and system latency.
+
+
+**Core Technologies & Methods**
+
+- PEFT techniques: Low-Rank Adaptation (LoRA) freezes base weights and trains small adapter matrices.
+- Alignment strategies: Proximal Policy Optimization (PPO) and Direct Preference Optimization (DPO) match human values.
+- Advanced scaling: Mixture of Experts (MoE) and Mixture of Agents (MoA) route tasks to specialized sub-networks.
+- Efficiency optimizations: Pruning, quantization, and routing reduce memory footprints during inference.

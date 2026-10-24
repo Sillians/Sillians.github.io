@@ -43,3 +43,9 @@ next-env.d.ts
 
 # local project notes
 README.md
+
+.venv
+/ .venv
+*/ .venv
+/* .venv
+
